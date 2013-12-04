@@ -1,0 +1,47 @@
+.chart {
+	width: 800;
+	height: 800;
+	font: 10px sans-serif;
+}
+
+.data {
+	stroke: white;
+	fill: steelblue;
+}
+
+.foreignobject {
+	overflow: hidden;
+}
+
+.label {
+	color: white;
+	fill: white;
+}
+
+.scale {
+	stroke: #cccccc;
+}
+
+.rule {
+	fill: #cccccc;
+}
+
+.y-axis {
+	stroke: #000000;
+}
+
+.uninsured-US {
+	fill: #9AB9E3;
+}
+
+.tier1 {
+	fill: #DB1212;
+}
+
+.tier2 {
+	fill: #DB5E5E;
+}
+
+.tier3 {
+	fill: #DE9292;
+}

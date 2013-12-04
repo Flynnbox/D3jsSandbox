@@ -1,0 +1,22 @@
+.albersMap {
+	width: 950;
+	height: 500;
+	font: 10px sans-serif;
+	float: left;
+}
+
+.us-state {
+	stroke: white;
+	fill: steelblue;
+	stroke-width: 1;
+}
+
+.label {
+	fill: white;
+}
+
+.rightInfoPane {
+	float: left;
+	width: 300px;
+	height: 100%;
+}

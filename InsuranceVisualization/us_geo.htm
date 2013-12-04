@@ -1,0 +1,34 @@
+<html>
+<head>
+		<link rel="stylesheet" type="text/css" href="./us-geo.css">
+</head>
+<body>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<script type="text/javascript" src="http://d3js.org/d3.v2.min.js"></script>
+<script type="text/javascript" src="./us-states.js"></script>
+<script type="text/javascript">
+function albersMap(){
+
+  var svg = d3.select('body')
+  	.append('svg:svg')
+    	.attr('class', 'albersMap')
+
+  var projection = d3.geo.albersUsa();
+
+  var states = svg.append('g')
+    .attr('id', 'states');
+
+  //states.attr('transform', 'scale(1, 1)');
+
+  states.selectAll('path')
+    .data(geo_us.features)
+  .enter().append('path')
+    .attr('d', d3.geo.path().projection(projection))
+    .attr('id', function(d){return d.properties.name.replace(/\s+/g, '')})
+    .attr('class', 'us-state');
+}
+
+albersMap();
+</script>
+</body>
+</html>

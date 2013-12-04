@@ -1,0 +1,82 @@
+<html>
+<head>
+		<link rel="stylesheet" type="text/css" href="./us-geo.css">
+		<link rel="stylesheet" type="text/css" href="./insurance.css">
+</head>
+<body>
+	<div id="container">
+		<svg id="map"></svg>
+		<div id="detailPanel">
+			<input type="radio" id="uninsured">Uninsured</input><input type="radio" id="underinsured">Underinsured</input>
+		</div>
+	</div>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<script type="text/javascript" src="http://d3js.org/d3.v2.min.js"></script>
+<script type="text/javascript" src="./us-states.js"></script>
+<script type="text/javascript" src="./ihi.data.insurance.js"></script>
+<script type="text/javascript">
+function albersMap(){
+
+	var uninsuredTierStyler = getTierStyler(getUninsuredTiers, getKey, getValue);
+
+  var svg = d3.select('#map')
+   	.attr('class', 'albersMap')
+
+  var projection = d3.geo.albersUsa();
+
+  var states = svg.append('g')
+    .attr('id', 'states');
+
+  //states.attr('transform', 'scale(1, 1)');
+
+  states.selectAll('path')
+    .data(geo_us.features)
+  .enter().append('path')
+    .attr('d', d3.geo.path().projection(projection))
+    .attr('id', function(d){return d.properties.name.replace(/\s+/g, '')})
+    .attr('class', uninsuredTierStyler);
+}
+
+function getUninsuredTiers(){
+	return [
+		{cssClass: 'tier1', minValue: 0.30},
+		{cssClass: 'tier2', minValue: 0.20},
+		{cssClass: 'tier3', minValue: 0.0}
+	];
+}
+
+function getKey(d){
+	return d.properties.name;
+}
+
+function getValue(key){
+	var matchedData = $.grep(ihi.data.insurance, function(item){ return key === item.name; });
+	console.log(matchedData);
+	if (matchedData.length === 0){
+		return null;
+	}
+	return matchedData[0].below200p.uninsuredPercentage;
+}
+
+function getTierStyler(getClassArray, getKey, getValue){
+	var sortedArray = getClassArray().sort(function(a, b) { return a.minValue > b.minValue ? -1 : 1; });
+	return function(d){
+		var key = getKey(d);
+		console.log(key);
+		
+		var value = getValue(key);
+		console.log(value);
+
+		for(var i = 0; i < sortedArray.length; i++){
+			if (value >= sortedArray[i].minValue){
+				return sortedArray[i].cssClass;
+			}
+		}
+		return '';
+	}
+}
+
+albersMap();
+</script>
+</body>
+</html>
